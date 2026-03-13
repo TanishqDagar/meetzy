@@ -19,6 +19,7 @@ const useUserStore = create(
       note: "",
       isOnboarded: false,
       matches: [],
+      journalEntries: [],
 
       // Actions
       setPrivateInfo: (data) => set((state) => ({ ...state, ...data })),
@@ -27,6 +28,9 @@ const useUserStore = create(
       setAnonymousId: (id) => set({ anonymousId: id }),
       setMood: (mood) => set({ currentMood: mood }),
       setSupport: (pref) => set({ supportPreference: pref }),
+      addJournalEntry: (entry) => set((state) => ({
+        journalEntries: [entry, ...state.journalEntries]
+      })),
       addMatch: (profile) => set((state) => ({ 
         matches: state.matches.find(m => m.id === profile.id) 
           ? state.matches 

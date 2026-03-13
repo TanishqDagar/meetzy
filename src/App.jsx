@@ -10,6 +10,7 @@ import Match from './pages/Match';
 import Chat from './pages/Chat';
 import Profile from './pages/Profile';
 import Matches from './pages/Matches';
+import Journal from './pages/Journal';
 import NotFound from './pages/NotFound';
 import './styles/globals.css';
 
@@ -28,6 +29,7 @@ function App() {
           <Route path="/identity" element={<IdentityReveal />} />
           <Route path="/match" element={<Match />} />
           <Route path="/matches" element={<Matches />} />
+          <Route path="/journal" element={<Journal />} />
           <Route path="/chat/:id" element={<Chat />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="*" element={<NotFound />} />
