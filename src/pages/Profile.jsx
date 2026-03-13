@@ -3,10 +3,10 @@ import useUserStore from '../store/userStore';
 import { getAnonymousId } from '../data/mockProfiles';
 
 const Profile = () => {
-  const { user, setUser } = useUserStore();
+  const { anonymousId, setAnonymousId, traits, supportPreference, age, gender } = useUserStore();
 
   const handleRegenerate = () => {
-    setUser({ id: getAnonymousId() });
+    setAnonymousId(getAnonymousId());
   };
 
   return (
@@ -25,7 +25,7 @@ const Profile = () => {
             <div className="absolute inset-0 bg-sage rounded-full opacity-5 blur-3xl animate-pulse" />
           </div>
 
-          <h1 className="font-mono text-4xl text-sage mb-4">{user.id || 'CalmTide12'}</h1>
+          <h1 className="font-mono text-4xl text-sage mb-4">{anonymousId || 'CalmTide12'}</h1>
           <button 
             onClick={handleRegenerate}
             className="text-[10px] font-mono uppercase tracking-[0.2em] text-white/20 hover:text-white transition-colors"
@@ -43,24 +43,29 @@ const Profile = () => {
           <section>
             <h3 className="font-heading text-xl mb-6">Current Experience</h3>
             <div className="flex flex-wrap gap-3 justify-center">
-              {user.traits.map(trait => (
+              {traits.map(trait => (
                 <span key={trait} className="px-6 py-2 rounded-full border border-white/5 bg-white/5 text-sm font-ui text-white/50">
                   {trait}
                 </span>
               ))}
-              {user.traits.length === 0 && <span className="opacity-20 italic font-ui">No traits selected</span>}
+              {traits.length === 0 && <span className="opacity-20 italic font-ui">No traits selected</span>}
             </div>
           </section>
 
           <section>
             <h3 className="font-heading text-xl mb-6">Interaction Preference</h3>
             <div className="inline-block px-8 py-3 rounded-2xl bg-bg-surface border border-white/5 text-sage font-ui">
-              {user.supportPreference}
+              {supportPreference}
             </div>
           </section>
 
           <div className="pt-12 border-t border-white/5">
-            <p className="font-mono text-[9px] uppercase tracking-[0.4em] text-white/10 leading-relaxed">
+            <h3 className="font-heading text-xl mb-6 opacity-30">Private Information</h3>
+            <div className="flex justify-center gap-12 font-mono text-[10px] uppercase tracking-widest text-white/20">
+                <div className="flex flex-col gap-1"><span>Age</span><span className="text-white/40">{age || '--'}</span></div>
+                <div className="flex flex-col gap-1"><span>Gender</span><span className="text-white/40">{gender || '--'}</span></div>
+            </div>
+            <p className="font-mono text-[9px] uppercase tracking-[0.4em] text-white/10 leading-relaxed mt-12">
               Safe Space · Decentralized · Private <br />
               All data stored locally on your device.
             </p>

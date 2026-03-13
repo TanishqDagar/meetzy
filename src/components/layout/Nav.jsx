@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import useUserStore from '../../store/userStore';
 
 const Nav = () => {
-  const { user } = useUserStore();
+  const { anonymousId } = useUserStore();
   const location = useLocation();
   const isLanding = location.pathname === '/';
 
@@ -28,7 +28,7 @@ const Nav = () => {
           to="/profile" 
           className={`font-ui text-sm uppercase tracking-widest transition-colors ${location.pathname === '/profile' ? 'text-sage' : 'text-white/50 hover:text-white'}`}
         >
-          {user.id || 'Profile'}
+          {anonymousId || 'Profile'}
         </Link>
       </div>
     </motion.nav>

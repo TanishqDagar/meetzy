@@ -27,7 +27,7 @@ const moods = [
     { id: "Calm", shape: "M50,10 L90,90 L10,90 Z" },
     { id: "Heavy", shape: "M10,10 L90,10 L90,90 L10,90 Z" },
     { id: "Hopeful", shape: "M50,10 A40,40 0 1,1 50,90 A40,40 0 1,1 50,10" },
-    { id: "Numb", shape: "M10,50 L90,50 J" }, // Note: simplified for display
+    { id: "Numb", shape: "M10,50 L90,50" },
     { id: "Restless", shape: "M10,10 L30,90 L50,10 L70,90 L90,10" }
 ];
 

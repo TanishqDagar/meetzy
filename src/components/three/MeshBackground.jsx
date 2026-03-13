@@ -6,6 +6,7 @@ const MeshBackground = () => {
   const mesh = useRef();
 
   useFrame((state) => {
+    if (!mesh.current) return;
     const time = state.clock.getElapsedTime();
     mesh.current.rotation.z = time * 0.05;
     const positions = mesh.current.geometry.attributes.position.array;

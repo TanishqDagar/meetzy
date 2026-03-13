@@ -8,7 +8,7 @@ import { generateName } from '../utils/nameGenerator';
 
 const IdentityReveal = () => {
   const navigate = useNavigate();
-  const { traits, currentMood, setAnonymousId, anonymousId, setUser } = useUserStore();
+  const { traits, currentMood, setAnonymousId, anonymousId, setPublicInfo } = useUserStore();
   const [isRevealing, setIsRevealing] = useState(false);
   const [displayText, setDisplayText] = useState('');
 
@@ -35,7 +35,7 @@ const IdentityReveal = () => {
   }, [isRevealing, anonymousId]);
 
   const handleEnter = () => {
-    setUser({ isOnboarded: true });
+    setPublicInfo({ isOnboarded: true });
     navigate('/match');
   };
 
