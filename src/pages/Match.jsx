@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { Heart, X, Bookmark, MessageCircle } from 'lucide-react';
 import MoodOrb from '../components/three/MoodOrb';
 import { mockProfiles } from '../data/mockProfiles';
+import useUserStore from '../store/userStore';
 
 const SwipeCard = ({ profile, i, onSwipe, active }) => {
     const x = useMotionValue(0);
@@ -97,9 +98,19 @@ const Match = () => {
     const navigate = useNavigate();
     const { addMatch } = useUserStore();
     const [currentIndex, setCurrentIndex] = useState(0);
-    const [profiles, setProfiles] = useState(mockProfiles);
+    const [profiles, setProfiles] = useState([]);
+    const [loading, setLoading] = useState(true);
     const [showMatchPopup, setShowMatchPopup] = useState(false);
     const [matchedProfile, setMatchedProfile] = useState(null);
+
+    useEffect(() => {
+        // Simulating data fetch for smoothness
+        const timer = setTimeout(() => {
+            setProfiles(mockProfiles || []);
+            setLoading(false);
+        }, 800);
+        return () => clearTimeout(timer);
+    }, []);
 
     const handleSwipe = (direction, profile) => {
         if (direction === 'right') {
@@ -133,7 +144,19 @@ const Match = () => {
             {/* Card Stack */}
             <div className="relative w-full max-w-[500px] aspect-[4/5] z-10">
                 <AnimatePresence>
-                    {currentIndex < profiles.length ? (
+                    {loading ? (
+                        <motion.div 
+                            key="loading"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            className="w-full h-full flex flex-col items-center justify-center text-center p-12 glass rounded-[60px]"
+                        >
+                            <div className="w-16 h-16 border-4 border-sage/10 border-t-sage rounded-full animate-spin mb-8" />
+                            <h3 className="font-heading text-2xl text-[#2d3748] mb-4">Searching local orbit...</h3>
+                            <p className="text-text-muted text-xs tracking-widest uppercase font-mono px-8">Connecting with compatible souls</p>
+                        </motion.div>
+                    ) : currentIndex < profiles.length ? (
                         <>
                             {/* Background Card (Shadow/Stack Effect) */}
                             {currentIndex + 1 < profiles.length && (
@@ -155,6 +178,7 @@ const Match = () => {
                         </>
                     ) : (
                         <motion.div 
+                            key="empty"
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             className="w-full h-full flex flex-col items-center justify-center text-center p-12 glass rounded-[60px]"
@@ -162,15 +186,15 @@ const Match = () => {
                             <div className="w-20 h-20 bg-sage/10 rounded-full flex items-center justify-center mb-8">
                                 <Heart className="text-sage opacity-40" size={32} />
                             </div>
-                            <h3 className="font-heading text-2xl text-[#2d3748] mb-4">You've seen everyone</h3>
+                            <h3 className="font-heading text-2xl text-[#2d3748] mb-4">Orbit is currently quiet</h3>
                             <p className="text-text-muted text-sm leading-relaxed mb-12">
-                                New souls arrive in the orbit every hour. <br />Come back soon to find more understanding.
+                                No users available right now. <br />New souls arrive in the orbit every hour.
                             </p>
                             <button 
                                 onClick={() => setCurrentIndex(0)}
-                                className="px-12 py-4 border border-sage/20 text-sage font-ui font-bold rounded-full hover:bg-sage/5 transition-all"
+                                className="px-12 py-4 border border-sage/20 text-sage font-ui font-bold rounded-full hover:bg-sage/5 transition-all outline-none"
                             >
-                                Re-orbit Profiles
+                                Refresh Orbit
                             </button>
                         </motion.div>
                     )}
@@ -178,7 +202,7 @@ const Match = () => {
             </div>
 
             {/* Controls */}
-            {currentIndex < profiles.length && (
+            {!loading && currentIndex < profiles.length && (
                 <div className="mt-16 flex gap-12 relative z-10">
                     <motion.button
                         whileTap={{ scale: 0.9 }}
