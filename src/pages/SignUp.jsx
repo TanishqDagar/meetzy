@@ -21,25 +21,32 @@ const SignUp = () => {
 
   return (
     <div className="relative min-h-screen bg-bg-base overflow-hidden pt-32 pb-20">
+      <div className="absolute inset-0 bg-mesh-soft opacity-40 z-0 pointer-events-none" />
+      
       <div className="absolute inset-0 z-0 opacity-40">
         <Canvas camera={{ position: [0, 0, 5] }}>
-          <ambientLight intensity={0.5} />
+          <ambientLight intensity={1.5} />
           <MeshBackground />
         </Canvas>
       </div>
 
       <div className="relative z-10 max-w-xl mx-auto px-6">
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-12"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-center mb-16"
         >
-          <h1 className="font-heading text-4xl mb-3 text-glow-sage">Private Registration</h1>
-          <p className="font-ui text-white/40 text-sm">Tell us about you — this stays private forever.</p>
+          <div className="inline-block font-mono text-[9px] uppercase tracking-[0.4em] text-sage/60 py-2 border-b border-sage/10 mb-6">
+              Step 1 of 3
+          </div>
+          <h1 className="font-heading text-5xl mb-4 text-[#2d3748]">Peaceful Entry</h1>
+          <p className="font-ui text-text-muted text-sm max-w-xs mx-auto leading-relaxed">
+            Tell us about you — this stays private forever. No user will see this information.
+          </p>
         </motion.div>
 
-        <form onSubmit={handleContinue} className="space-y-8 glass p-10 rounded-[40px] border-white/5 shadow-2xl">
-          <div className="space-y-6">
+        <form onSubmit={handleContinue} className="space-y-8 glass p-12 rounded-[50px] border-white/60 shadow-2xl relative">
+          <div className="space-y-8">
             <PrivacyField 
               label="Full Name" 
               value={localState.realName} 
@@ -48,44 +55,49 @@ const SignUp = () => {
               onChange={e => setLocalState({...localState, realName: e.target.value})} 
             />
             
-            <div className="grid grid-cols-2 gap-6">
+            <div className="grid grid-cols-2 gap-8">
               <PrivacyField 
                 label="Age" 
                 type="number"
-                delay={0.2}
+                delay={0.15}
                 value={localState.age || ''} 
                 placeholder="Min 16"
                 onChange={e => setLocalState({...localState, age: e.target.value})} 
               />
-              <div className="space-y-2">
-                <label className="font-ui text-xs text-white/40 uppercase tracking-widest px-1">Gender</label>
-                <select 
-                  className="w-full bg-white/5 border border-white/5 rounded-2xl px-6 py-4 font-ui text-sm text-white/80 focus:outline-none focus:border-sage/30 appearance-none cursor-pointer hover:bg-white/10 transition-all"
-                  value={localState.gender}
-                  onChange={e => setLocalState({...localState, gender: e.target.value})}
-                >
-                  <option value="" disabled className="bg-bg-surface">Select</option>
-                  <option value="Male" className="bg-bg-surface">Male</option>
-                  <option value="Female" className="bg-bg-surface">Female</option>
-                  <option value="Non-binary" className="bg-bg-surface">Non-binary</option>
-                  <option value="Prefer not to say" className="bg-bg-surface">Prefer not to say</option>
-                </select>
+              <div className="space-y-3">
+                <label className="font-ui text-xs text-text-muted uppercase tracking-[0.15em] px-2">Gender</label>
+                <div className="relative">
+                    <select 
+                        className="w-full bg-white/40 border border-white/60 rounded-3xl px-8 py-5 font-ui text-sm text-[#2d3748] focus:outline-none focus:border-sage/40 appearance-none cursor-pointer hover:bg-white/80 transition-all shadow-sm"
+                        value={localState.gender}
+                        onChange={e => setLocalState({...localState, gender: e.target.value})}
+                    >
+                        <option value="" disabled>Select</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                        <option value="Non-binary">Non-binary</option>
+                        <option value="Prefer not to say">Prefer not to say</option>
+                    </select>
+                    <div className="absolute right-8 top-1/2 -translate-y-1/2 pointer-events-none opacity-20">
+                        <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2.5 4.5L6 8L9.5 4.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                    </div>
+                </div>
               </div>
             </div>
 
             <PrivacyField 
               label="Email Address" 
               type="email"
-              delay={0.3}
+              delay={0.2}
               value={localState.email} 
               placeholder="you@example.com"
               onChange={e => setLocalState({...localState, email: e.target.value})} 
             />
             
             <PrivacyField 
-              label="Secure Password" 
+              label="Password" 
               type="password"
-              delay={0.4}
+              delay={0.25}
               value={localState.password} 
               placeholder="••••••••"
               onChange={e => setLocalState({...localState, password: e.target.value})} 
@@ -96,17 +108,16 @@ const SignUp = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.6 }}
-            className="flex flex-col items-center gap-6 pt-4"
+            className="flex flex-col items-center gap-8 pt-6"
           >
-            <p className="text-[10px] font-mono text-white/20 text-center leading-relaxed">
-              Your real name will never appear to anyone on Meetzy. Ever. <br />
-              Encryption active.
+            <p className="text-[10px] font-mono text-text-muted/40 text-center leading-relaxed max-w-[280px]">
+                "Your real name will never appear to anyone on Meetzy. Ever."
             </p>
             
             <button 
               type="submit"
               disabled={!localState.realName || !localState.email || !localState.password}
-              className="w-full py-5 bg-bg-surface-light border border-white/10 rounded-3xl font-ui font-bold hover:border-sage hover:text-sage transition-all duration-500 disabled:opacity-20 flex justify-center items-center gap-2 group"
+              className="w-full py-6 bg-[#2d3748] text-white rounded-[32px] font-ui font-bold hover:bg-[#1a202c] transition-all duration-700 disabled:opacity-20 flex justify-center items-center gap-2 group shadow-2xl shadow-indigo-900/10"
             >
               Continue 
               <span className="group-hover:translate-x-1 transition-transform">→</span>

@@ -5,26 +5,28 @@ import * as THREE from 'three';
 const ParticleField = () => {
   const points = useRef();
 
-  const count = 2000;
+  const count = 1500; // Fewer particles for a cleaner look
   const positions = useMemo(() => {
     const pos = new Float32Array(count * 3);
     for (let i = 0; i < count; i++) {
-      pos[i * 3] = (Math.random() - 0.5) * 10;
-      pos[i * 3 + 1] = (Math.random() - 0.5) * 10;
-      pos[i * 3 + 2] = (Math.random() - 0.5) * 10;
+        // More spread out
+      pos[i * 3] = (Math.random() - 0.5) * 15;
+      pos[i * 3 + 1] = (Math.random() - 0.5) * 15;
+      pos[i * 3 + 2] = (Math.random() - 0.5) * 15;
     }
     return pos;
   }, []);
 
   useFrame((state) => {
+    if (!points.current) return;
     const time = state.clock.getElapsedTime();
     for (let i = 0; i < count; i++) {
       const i3 = i * 3;
-      points.current.geometry.attributes.position.array[i3 + 1] += Math.sin(time + i) * 0.002;
+      points.current.geometry.attributes.position.array[i3 + 1] += Math.sin(time * 0.5 + i) * 0.001;
     }
     points.current.geometry.attributes.position.needsUpdate = true;
-    points.current.rotation.y = time * 0.05;
-    points.current.rotation.x = time * 0.02;
+    points.current.rotation.y = time * 0.02;
+    points.current.rotation.x = time * 0.01;
   });
 
   return (
@@ -38,11 +40,12 @@ const ParticleField = () => {
         />
       </bufferGeometry>
       <pointsMaterial
-        size={0.02}
-        color="#7eb8a4"
+        size={0.025}
+        color="#8caf9f" // Muted sage for light theme
         transparent
-        opacity={0.4}
+        opacity={0.15}
         sizeAttenuation={true}
+        blending={THREE.AdditiveBlending}
       />
     </points>
   );

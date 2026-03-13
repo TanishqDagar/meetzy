@@ -15,15 +15,15 @@ const PrivacyField = ({ label, type = "text", value, onChange, placeholder, tool
       className="w-full space-y-2 group"
     >
       <div className="flex items-center gap-2 px-1">
-        <label className="font-ui text-xs text-white/40 uppercase tracking-widest">{label}</label>
+        <label className="font-ui text-xs text-text-muted hover:text-text-main transition-colors uppercase tracking-[0.2em]">{label}</label>
         <div 
           className="relative cursor-help"
           onMouseEnter={() => setShowTooltip(true)}
           onMouseLeave={() => setShowTooltip(false)}
         >
-          <Lock size={12} className="text-white/20 group-focus-within:text-sage transition-colors" />
+          <Lock size={12} className="text-sage/40 group-focus-within:text-sage transition-colors" />
           {showTooltip && (
-            <div className="absolute left-full ml-2 top-1/2 -translate-y-1/2 bg-bg-surface-light border border-white/10 px-3 py-1 rounded-md text-[10px] whitespace-nowrap z-50 text-white/60 font-mono tracking-tighter">
+            <div className="absolute left-full ml-3 top-1/2 -translate-y-1/2 bg-white/90 backdrop-blur-3xl border border-white px-4 py-2 rounded-xl text-[10px] whitespace-nowrap z-50 text-text-main font-mono shadow-xl shadow-indigo-100/20">
               {tooltip || "Only you can see this"}
             </div>
           )}
@@ -36,15 +36,15 @@ const PrivacyField = ({ label, type = "text", value, onChange, placeholder, tool
           value={value}
           onChange={onChange}
           placeholder={placeholder}
-          className="w-full bg-white/5 border border-white/5 rounded-2xl px-6 py-4 font-ui text-sm focus:outline-none focus:border-sage/30 focus:bg-white/10 transition-all placeholder:text-white/10"
+          className="w-full bg-white/40 border border-white/60 rounded-3xl px-8 py-5 font-ui text-sm focus:outline-none focus:border-sage/40 focus:bg-white/80 transition-all placeholder:text-text-muted/30 shadow-sm"
         />
         {isPassword && (
           <button 
             type="button"
             onClick={() => setIsPasswordVisible(!isPasswordVisible)}
-            className="absolute right-6 top-1/2 -translate-y-1/2 text-white/20 hover:text-white transition-colors"
+            className="absolute right-8 top-1/2 -translate-y-1/2 text-text-muted/40 hover:text-text-main transition-colors"
           >
-            {isPasswordVisible ? <EyeOff size={16} /> : <Eye size={16} />}
+            {isPasswordVisible ? <EyeOff size={18} /> : <Eye size={18} />}
           </button>
         )}
       </div>

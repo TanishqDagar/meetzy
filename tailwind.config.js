@@ -7,20 +7,25 @@ export default {
   theme: {
     extend: {
       colors: {
-        'bg-base': '#0d0f14',
-        'bg-surface': '#13161e',
-        'bg-surface-light': '#1a1e28',
-        'sage': '#7eb8a4',
-        'lavender': '#9b8ec4',
-        'amber': '#b8a07e',
-        'rose': '#c49b9b',
-        'sky': '#7e9eb8',
+        'bg-base': '#f5f7f9', // Soft Pearl/Mist base
+        'bg-surface': 'rgba(255, 255, 255, 0.7)',
+        'bg-surface-light': 'rgba(255, 255, 255, 0.4)',
+        'text-main': '#2d3748',
+        'text-muted': '#718096',
+        'sage': '#8caf9f', // Muted sage
+        'lavender': '#a3a6cc', // Softer lavender
+        'amber': '#d2b48c',
+        'rose': '#e2a7a7',
+        'sky': '#a0c4ff',
       },
       fontFamily: {
         heading: ['"DM Serif Display"', 'serif'],
         ui: ['Syne', 'sans-serif'],
         mono: ['"DM Mono"', 'monospace'],
       },
+      backgroundImage: {
+        'gradient-calm': 'linear-gradient(135deg, #f5f7fa 0%, #e4e9f2 100%)',
+      }
     },
   },
   plugins: [],

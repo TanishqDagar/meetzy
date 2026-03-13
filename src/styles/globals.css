@@ -4,8 +4,9 @@
 
 @layer base {
   body {
-    @apply bg-bg-base text-white font-ui antialiased;
+    @apply bg-bg-base text-[#2d3748] font-ui antialiased;
     overflow-x: hidden;
+    background: fixed linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
   }
 
   /* Custom Scrollbar */
@@ -17,36 +18,50 @@
 
 @layer utilities {
   .anti-gravity {
-    @apply transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)];
+    @apply transition-transform duration-1000 ease-[cubic-bezier(0.22,1,0.36,1)];
   }
   
   .glass {
-    @apply bg-white/5 backdrop-blur-xl border border-white/10;
+    @apply bg-white/40 backdrop-blur-3xl border border-white/60 shadow-[0_8px_32px_rgba(31,38,135,0.07)];
   }
 
   .text-glow-sage {
-    text-shadow: 0 0 20px rgba(126, 184, 164, 0.3);
+    text-shadow: 0 0 25px rgba(139, 175, 159, 0.2);
   }
-
-  .text-glow-lavender {
-    text-shadow: 0 0 20px rgba(155, 142, 196, 0.3);
+  
+  .bg-mesh-soft {
+    background-image: 
+      radial-gradient(at 0% 0%, hsla(152, 22%, 92%, 1) 0, transparent 50%), 
+      radial-gradient(at 50% 0%, hsla(225, 39%, 92%, 1) 0, transparent 50%), 
+      radial-gradient(at 100% 0%, hsla(339, 49%, 92%, 1) 0, transparent 50%);
   }
 }
 
 /* Page Transitions */
 .page-enter {
   opacity: 0;
-  transform: translateY(20px) scale(0.98);
+  transform: translateY(10px) scale(0.99);
 }
 
 .page-enter-active {
   opacity: 1;
   transform: translateY(0) scale(1);
-  transition: opacity 500ms, transform 500ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition: opacity 800ms, transform 800ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .page-exit {
   opacity: 0;
-  transform: translateY(-20px) scale(0.98);
-  transition: opacity 300ms, transform 300ms;
+  transform: translateY(-10px);
+  transition: opacity 400ms, transform 400ms;
+}
+
+/* Floating Elements */
+.float-element {
+  animation: float 12s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0) translateX(0); }
+  33% { transform: translateY(-20px) translateX(10px); }
+  66% { transform: translateY(10px) translateX(-15px); }
 }

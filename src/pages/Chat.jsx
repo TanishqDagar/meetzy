@@ -1,98 +1,106 @@
 import { useState, useEffect, useRef } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Send, ArrowLeft } from 'lucide-react';
+import { Send, ArrowLeft, Info, MessageSquare } from 'lucide-react';
 
 const Chat = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [messages, setMessages] = useState([
-    { text: "Hello. I see we match based on similar experiences.", sender: 'other' }
+    { id: 1, text: "Hello. I also struggle with overthinking. How are you feeling today?", sender: "other", time: "12:01 PM" }
   ]);
-  const [input, setInput] = useState('');
+  const [input, setInput] = useState("");
   const scrollRef = useRef();
 
   useEffect(() => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
-    }
+    scrollRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
-  const handleSend = () => {
+  const handleSend = (e) => {
+    e.preventDefault();
     if (!input.trim()) return;
-    setMessages([...messages, { text: input, sender: 'me' }]);
-    setInput('');
+    setMessages([...messages, { id: Date.now(), text: input, sender: 'me', time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) }]);
+    setInput("");
   };
 
   return (
-    <div className="flex flex-col h-screen bg-bg-base pt-24 text-white">
+    <div className="h-screen w-full bg-bg-base flex flex-col pt-24 overflow-hidden relative">
+      <div className="absolute inset-0 bg-mesh-soft opacity-20 z-0 pointer-events-none" />
+      
       {/* Header */}
-      <div className="flex items-center gap-4 px-8 py-4 border-b border-white/5 bg-bg-surface/50 backdrop-blur-md">
-        <Link to="/match" className="p-2 hover:bg-white/5 rounded-full transition-colors">
-          <ArrowLeft size={20} />
-        </Link>
-        <div className="flex flex-col">
-          <span className="font-mono text-sm tracking-widest text-sage">{id}</span>
-          <span className="text-[10px] text-white/30 uppercase tracking-[0.2em]">Connected Moments Ago</span>
+      <div className="px-10 py-8 border-b border-white/60 bg-white/40 backdrop-blur-3xl flex justify-between items-center relative z-10">
+        <div className="flex items-center gap-6">
+          <button onClick={() => navigate('/match')} className="text-text-muted hover:text-text-main transition-colors">
+            <ArrowLeft size={24} />
+          </button>
+          <div>
+            <h1 className="font-mono text-xl text-[#2d3748] tracking-widest font-bold">{id}</h1>
+            <div className="flex items-center gap-2 text-[9px] font-mono text-sage uppercase tracking-widest mt-1">
+              <span className="w-2 h-2 rounded-full bg-sage animate-pulse" />
+              Mind Connected
+            </div>
+          </div>
         </div>
+        <button className="text-text-muted/40 hover:text-text-main transition-colors">
+          <Info size={20} />
+        </button>
+      </div>
+
+      {/* Shared Space Placeholder */}
+      <div className="px-10 py-6 bg-sage/5 border-b border-sage/10 relative z-10 overflow-hidden flex items-center justify-center">
+            <div className="absolute inset-0 bg-white/20 blur-[60px]" />
+            <p className="font-ui text-[10px] text-sage font-bold tracking-[0.2em] relative z-10 flex items-center gap-3">
+                <MessageSquare size={12} />
+                SHARED INTENTION: LISTENING & HOLDING SPACE
+            </p>
       </div>
 
       {/* Messages */}
-      <div 
-        ref={scrollRef}
-        className="flex-1 overflow-y-auto p-8 space-y-6 scroll-smooth"
-      >
-        <div className="text-center py-10 opacity-30">
-            <p className="font-ui text-xs tracking-widest uppercase">Encryption active. Safety first.</p>
-        </div>
-
-        <AnimatePresence>
-          {messages.map((m, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 10, scale: 0.95 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
+      <div className="flex-1 overflow-y-auto px-10 py-12 space-y-8 relative z-10 scroll-smooth">
+        <AnimatePresence initial={false}>
+          {messages.map((m) => (
+            <motion.div 
+              key={m.id}
+              initial={{ opacity: 0, scale: 0.95, y: 10 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
               className={`flex ${m.sender === 'me' ? 'justify-end' : 'justify-start'}`}
             >
-              <div className={`max-w-[80%] px-6 py-4 rounded-[28px] font-ui text-sm leading-relaxed ${
-                m.sender === 'me' ? 'bg-sage/10 text-sage border border-sage/20' : 'bg-white/5 text-white/80 border border-white/10'
-              }`}>
-                {m.text}
+              <div className={`max-w-[70%] space-y-2`}>
+                <div className={`px-10 py-5 rounded-[32px] font-ui text-sm shadow-2xl ${
+                  m.sender === 'me' 
+                    ? 'bg-[#2d3748] text-white shadow-indigo-900/10' 
+                    : 'bg-white border border-white/80 text-text-main shadow-indigo-100/30'
+                }`}>
+                  {m.text}
+                </div>
+                <div className={`px-4 font-mono text-[8px] tracking-widest text-text-muted/40 uppercase font-bold flex ${m.sender === 'me' ? 'justify-end' : 'justify-start'}`}>
+                  {m.time}
+                </div>
               </div>
             </motion.div>
           ))}
         </AnimatePresence>
-      </div>
-
-      {/* Shared Prompts */}
-      <div className="px-8 flex gap-3 overflow-x-auto pb-4 no-scrollbar">
-        {["What's been weighing on you?", "What do you wish people understood?", "Just listening today."].map(prompt => (
-          <button 
-            key={prompt}
-            onClick={() => setInput(prompt)}
-            className="flex-none px-4 py-2 bg-white/5 border border-white/5 rounded-full text-[10px] uppercase font-mono tracking-wider text-white/40 hover:text-white hover:border-white/10 transition-all"
-          >
-            {prompt}
-          </button>
-        ))}
+        <div ref={scrollRef} />
       </div>
 
       {/* Input */}
-      <div className="p-8 pb-10">
-        <div className="relative">
+      <div className="p-10 relative z-10">
+        <form onSubmit={handleSend} className="max-w-4xl mx-auto relative group">
           <input 
-            type="text" 
             value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyPress={(e) => e.key === 'Enter' && handleSend()}
-            placeholder="Focus on the mind, not the mask..."
-            className="w-full bg-bg-surface border border-white/10 rounded-[30px] px-8 py-5 pr-16 font-ui text-sm focus:outline-none focus:border-lavender/50 transition-all placeholder:text-white/10"
+            onChange={e => setInput(e.target.value)}
+            placeholder="Share your thoughts safely..."
+            className="w-full bg-white border border-white/80 rounded-[40px] px-12 py-6 font-ui text-sm text-text-main focus:outline-none focus:border-sage/40 transition-all shadow-3xl shadow-indigo-100/40 placeholder:text-text-muted/20"
           />
           <button 
-            onClick={handleSend}
-            className="absolute right-4 top-1/2 -translate-y-1/2 p-3 bg-sage/20 text-sage rounded-full hover:bg-sage hover:text-bg-base transition-all"
+            type="submit"
+            className="absolute right-6 top-1/2 -translate-y-1/2 w-12 h-12 bg-[#2d3748] text-white rounded-full flex items-center justify-center hover:scale-105 transition-all shadow-xl shadow-indigo-900/20"
           >
             <Send size={18} />
           </button>
+        </form>
+        <div className="max-w-4xl mx-auto mt-6 text-center">
+            <span className="font-mono text-[8px] tracking-[0.4em] text-text-muted/30 uppercase">Messages are encrypted and ephemeral</span>
         </div>
       </div>
     </div>

@@ -8,10 +8,13 @@ const NotFound = () => {
 
     return (
         <div className="relative h-screen w-full bg-bg-base overflow-hidden flex flex-col items-center justify-center">
+            {/* Soft Background Blobs */}
+            <div className="absolute inset-0 bg-mesh-soft opacity-40 z-0 pointer-events-none" />
+            
             {/* 3D background */}
             <div className="absolute inset-0 z-0 opacity-20">
                 <Canvas camera={{ position: [0, 0, 5] }}>
-                    <ambientLight intensity={0.5} />
+                    <ambientLight intensity={1.5} />
                     <ParticleField />
                 </Canvas>
             </div>
@@ -20,12 +23,12 @@ const NotFound = () => {
                 <motion.div
                     initial={{ opacity: 0, scale: 0.9 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    className="mb-8"
+                    className="mb-12"
                 >
-                    <h1 className="font-heading text-9xl text-sage/20 relative">
+                    <h1 className="font-heading text-9xl text-sage/10 relative">
                         404
                         <div className="absolute inset-0 flex items-center justify-center">
-                            <span className="font-mono text-xl tracking-[0.5em] text-white/40 uppercase">Lost in Space</span>
+                            <span className="font-mono text-xl tracking-[0.5em] text-[#2d3748]/40 uppercase font-bold">Lost In Mist</span>
                         </div>
                     </h1>
                 </motion.div>
@@ -34,17 +37,17 @@ const NotFound = () => {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: 0.2 }}
-                    className="font-ui text-white/30 text-sm max-w-xs mx-auto mb-12 leading-relaxed"
+                    className="font-ui text-text-muted text-sm max-w-xs mx-auto mb-16 leading-relaxed"
                 >
-                    The thoughts you're looking for have drifted beyond the current orbit.
+                    The thoughts you're looking for have drifted beyond the current orbit. Let's redirect back to the peaceful center.
                 </motion.p>
 
                 <motion.button
-                    initial={{ opacity: 0, y: 10 }}
+                    initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.4 }}
                     onClick={() => navigate('/')}
-                    className="px-12 py-4 bg-white/5 border border-white/10 rounded-full font-ui font-semibold hover:bg-white hover:text-bg-base transition-all duration-500"
+                    className="px-16 py-6 bg-[#2d3748] text-white border border-[#2d3748]/10 rounded-full font-ui font-bold hover:scale-105 transition-all duration-700 shadow-2xl shadow-indigo-900/10"
                 >
                     Return to Center
                 </motion.button>

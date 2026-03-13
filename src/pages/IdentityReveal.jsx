@@ -18,7 +18,8 @@ const IdentityReveal = () => {
       setAnonymousId(newId);
     }
     
-    const timer = setTimeout(() => setIsRevealing(true), 1500);
+    // Delayed revealing transition for maximum calm
+    const timer = setTimeout(() => setIsRevealing(true), 2000);
     return () => clearTimeout(timer);
   }, [traits, currentMood, anonymousId]);
 
@@ -29,7 +30,7 @@ const IdentityReveal = () => {
         setDisplayText(anonymousId.slice(0, i));
         i++;
         if (i > anonymousId.length) clearInterval(interval);
-      }, 100);
+      }, 150); // Slower, more deliberate reveal
       return () => clearInterval(interval);
     }
   }, [isRevealing, anonymousId]);
@@ -44,14 +45,16 @@ const IdentityReveal = () => {
     setAnonymousId(newId);
     setDisplayText('');
     setIsRevealing(false);
-    setTimeout(() => setIsRevealing(true), 500);
+    setTimeout(() => setIsRevealing(true), 800);
   };
 
   return (
-    <div className="relative h-screen w-full bg-black overflow-hidden flex flex-col items-center justify-center">
+    <div className="relative h-screen w-full bg-bg-base overflow-hidden flex flex-col items-center justify-center">
+      <div className="absolute inset-0 bg-mesh-soft opacity-30 z-0 pointer-events-none" />
+      
       <div className="absolute inset-0 z-0">
         <Canvas camera={{ position: [0, 0, 10] }}>
-          <ambientLight intensity={1} />
+          <ambientLight intensity={1.5} />
           <IdentityRevealParticles active={isRevealing} />
         </Canvas>
       </div>
@@ -64,9 +67,9 @@ const IdentityReveal = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="text-white/20 font-mono text-sm tracking-[0.5em] uppercase animate-pulse"
+              className="text-sage font-mono text-[10px] tracking-[0.5em] uppercase animate-pulse"
             >
-              Generating Mind-Signature...
+              Listening to your thoughts...
             </motion.div>
           ) : (
             <motion.div
@@ -75,41 +78,41 @@ const IdentityReveal = () => {
               animate={{ opacity: 1 }}
               className="flex flex-col items-center text-center"
             >
-              <p className="font-ui text-white/30 text-xs mb-8 uppercase tracking-[0.3em]">
-                Your Meetzy identity has been created
+              <p className="font-ui text-text-muted text-[10px] mb-8 uppercase tracking-[0.4em] font-semibold">
+                Your Meetzy identity has been revealed
               </p>
               
-              <div className="relative py-12 px-20">
-                <div className="absolute inset-x-0 inset-y-0 bg-sage rounded-full blur-[100px] opacity-10 animate-pulse" />
-                <h1 className="font-mono text-6xl md:text-8xl text-sage relative z-10 transition-all duration-1000">
+              <div className="relative py-12 px-24">
+                <div className="absolute inset-x-0 inset-y-0 bg-sage/5 rounded-full blur-[100px] opacity-10 animate-pulse" />
+                <h1 className="font-mono text-6xl md:text-8xl text-sage relative z-10 transition-all duration-1000 text-glow-sage">
                   {displayText}
-                  <span className="w-2 h-12 md:h-20 bg-sage ml-1 inline-block animate-pulse align-middle" />
+                  <span className="w-1.5 h-12 md:h-16 bg-sage/20 ml-2 inline-block animate-pulse align-middle" />
                 </h1>
               </div>
 
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 1 }}
-                className="mt-12 flex flex-col items-center gap-8"
+                transition={{ delay: 1.2, duration: 1 }}
+                className="mt-16 flex flex-col items-center gap-10"
               >
-                <p className="text-white/40 font-ui text-sm max-w-xs leading-relaxed">
-                  This is you on Meetzy. <br />
-                  No one will ever know your real name.
+                <p className="text-text-muted font-ui text-sm max-w-xs leading-relaxed italic">
+                  "This is the name you’ll use in our safe space. <br />
+                  No one will ever know the real you."
                 </p>
 
-                <div className="flex flex-col gap-4">
+                <div className="flex flex-col gap-6">
                   <button
                     onClick={handleEnter}
-                    className="px-20 py-5 bg-sage text-bg-base font-ui font-bold rounded-full hover:scale-105 transition-all shadow-2xl shadow-sage/20"
+                    className="px-24 py-6 bg-[#2d3748] text-white font-ui font-bold rounded-[32px] hover:scale-105 transition-all shadow-2xl shadow-indigo-900/10"
                   >
                     Enter Meetzy →
                   </button>
                   <button
                     onClick={handleRegenerate}
-                    className="text-[10px] font-mono text-white/20 uppercase tracking-widest hover:text-white transition-colors"
+                    className="text-[10px] font-mono text-text-muted hover:text-text-main uppercase tracking-[0.3em] font-semibold transition-colors"
                   >
-                    Regenerate Name
+                    Regenerate Identity
                   </button>
                 </div>
               </motion.div>

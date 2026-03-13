@@ -13,20 +13,20 @@ const Nav = () => {
     <motion.nav 
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="fixed top-0 left-0 right-0 z-50 px-8 py-6 flex justify-between items-center glass border-b-0"
+      className="fixed top-0 left-0 right-0 z-50 px-10 py-6 flex justify-between items-center bg-white/20 backdrop-blur-3xl border-b border-white/40"
     >
-      <Link to="/" className="font-heading text-2xl tracking-tighter">Meetzy</Link>
+      <Link to="/" className="font-heading text-2xl tracking-tighter text-[#2d3748]">Meetzy</Link>
       
-      <div className="flex gap-8 items-center">
+      <div className="flex gap-10 items-center">
         <Link 
           to="/match" 
-          className={`font-ui text-sm uppercase tracking-widest transition-colors ${location.pathname === '/match' ? 'text-sage' : 'text-white/50 hover:text-white'}`}
+          className={`font-ui text-[11px] uppercase tracking-[0.3em] transition-all font-semibold ${location.pathname === '/match' ? 'text-sage' : 'text-text-muted hover:text-text-main'}`}
         >
           Matching
         </Link>
         <Link 
           to="/profile" 
-          className={`font-ui text-sm uppercase tracking-widest transition-colors ${location.pathname === '/profile' ? 'text-sage' : 'text-white/50 hover:text-white'}`}
+          className={`font-ui text-[11px] uppercase tracking-[0.3em] transition-all font-semibold ${location.pathname === '/profile' ? 'text-sage' : 'text-text-muted hover:text-text-main'}`}
         >
           {anonymousId || 'Profile'}
         </Link>

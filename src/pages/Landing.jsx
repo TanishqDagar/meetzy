@@ -8,21 +8,32 @@ const Landing = () => {
 
   return (
     <div className="relative w-full h-screen overflow-hidden bg-bg-base">
-      {/* 3D Background */}
+      {/* Soft Background Blobs */}
+      <div className="absolute inset-0 bg-mesh-soft opacity-30 z-0 pointer-events-none" />
+      
+      {/* Three.js Layer */}
       <div className="absolute inset-0 z-0">
-        <Canvas camera={{ position: [0, 0, 5], fov: 75 }}>
-          <ambientLight intensity={0.5} />
+        <Canvas camera={{ position: [0, 0, 5], fov: 75 }} dpr={[1, 2]}>
+          <ambientLight intensity={1.5} />
           <ParticleField />
         </Canvas>
       </div>
 
+      {/* Floating Elements (Visual Interest) */}
+      <div className="absolute top-[20%] left-[10%] w-32 h-32 bg-sage/5 blur-[80px] rounded-full float-element opacity-40" />
+      <div className="absolute bottom-[30%] right-[15%] w-48 h-48 bg-lavender/5 blur-[100px] rounded-full float-element opacity-40 delay-1000" />
+
       {/* Content */}
-      <div className="relative z-10 flex flex-col items-center justify-center h-full text-center px-4">
+      <div className="relative z-10 flex flex-col items-center justify-center h-full text-center px-6">
+        <div className="mb-6 inline-block font-mono text-[9px] uppercase tracking-[0.5em] text-sage/60 py-2 border-b border-sage/10">
+            A Place of Empathy
+        </div>
+
         <motion.h1 
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-          className="font-heading text-6xl md:text-8xl mb-6 tracking-tight text-glow-sage"
+          transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+          className="font-heading text-6xl md:text-8xl mb-8 tracking-tighter text-[#2d3748] text-glow-sage"
         >
           Be Understood,<br />Not Judged
         </motion.h1>
@@ -30,8 +41,8 @@ const Landing = () => {
         <motion.p 
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.5, duration: 1 }}
-          className="font-ui text-lg md:text-xl text-white/50 max-w-xl mb-12 leading-relaxed"
+          transition={{ delay: 0.6, duration: 1.2 }}
+          className="font-ui text-md md:text-lg text-text-muted max-w-xl mb-16 leading-relaxed"
         >
           A personality-safe connection platform focusing on empathy, 
           psychological compatibility, and shared experience.
@@ -40,20 +51,20 @@ const Landing = () => {
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.8 }}
-          className="flex flex-col md:flex-row gap-4"
+          transition={{ delay: 1 }}
+          className="flex flex-col md:flex-row gap-6"
         >
           <button 
             onClick={() => navigate('/signup')}
-            className="px-12 py-4 bg-white text-bg-base border border-white/10 rounded-full font-ui font-bold hover:scale-105 transition-all duration-500 shadow-2xl shadow-sage/20"
+            className="px-14 py-5 bg-white text-[#2d3748] border border-white/50 rounded-full font-ui font-bold hover:scale-105 transition-all duration-700 shadow-2xl shadow-indigo-100/30"
           >
             Create Account
           </button>
           <button 
-            onClick={() => navigate('/signup')}
-            className="px-12 py-4 border border-white/5 rounded-full font-ui text-white/40 hover:text-white hover:border-white/10 transition-all font-semibold"
+            onClick={() => navigate('/match')}
+            className="px-14 py-5 bg-sage/10 text-sage border border-sage/10 rounded-full font-ui font-bold hover:bg-sage/15 transition-all duration-700"
           >
-            Sign In
+            Enter Guest
           </button>
         </motion.div>
       </div>
@@ -62,10 +73,10 @@ const Landing = () => {
       <motion.div 
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 1.2 }}
-        className="absolute bottom-12 left-0 right-0 text-center font-mono text-[10px] uppercase tracking-[0.3em] text-white/20 pointer-events-none"
+        transition={{ delay: 1.5 }}
+        className="absolute bottom-12 left-0 right-0 text-center font-mono text-[9px] uppercase tracking-[0.5em] text-text-muted opacity-40 pointer-events-none"
       >
-        No Profile Pictures · No Real Names · No Validation Metrics
+        No Profile Pictures · No Real Names · No Popularity Metrics
       </motion.div>
     </div>
   );
