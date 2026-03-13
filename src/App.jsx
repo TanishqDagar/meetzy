@@ -3,6 +3,7 @@ import { AnimatePresence } from 'framer-motion';
 import Nav from './components/layout/Nav';
 import CustomCursor from './components/layout/CustomCursor';
 import Landing from './pages/Landing';
+import Login from './pages/Login';
 import SignUp from './pages/SignUp';
 import Onboarding from './pages/Onboarding';
 import IdentityReveal from './pages/IdentityReveal';
@@ -24,6 +25,7 @@ function App() {
       <AnimatePresence mode="wait">
         <Routes location={location} key={location.pathname}>
           <Route path="/" element={<Landing />} />
+          <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/onboarding" element={<Onboarding />} />
           <Route path="/identity" element={<IdentityReveal />} />

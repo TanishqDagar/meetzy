@@ -115,20 +115,12 @@ const Landing = () => {
           className="flex gap-10 items-center"
         >
           {!isAuthenticated ? (
-            <>
-              <button 
-                onClick={() => navigate('/login')}
-                className="text-[11px] font-bold uppercase tracking-[0.3em] text-text-muted hover:text-text-main transition-colors"
-              >
-                Sign In
-              </button>
-              <button 
-                onClick={() => setShowModal(true)}
-                className="px-8 py-4 bg-white/40 backdrop-blur-md border border-white/60 rounded-full text-[11px] font-bold uppercase tracking-[0.3em] text-[#2d3748] hover:bg-white/80 transition-all shadow-lg"
-              >
-                Sign Up
-              </button>
-            </>
+            <button 
+              onClick={() => setShowModal(true)}
+              className="px-8 py-4 bg-white/40 backdrop-blur-md border border-white/60 rounded-full text-[11px] font-bold uppercase tracking-[0.3em] text-[#2d3748] hover:bg-white/80 transition-all shadow-lg"
+            >
+              Sign Up
+            </button>
           ) : (
             <button 
               onClick={logout}
@@ -187,7 +179,7 @@ const Landing = () => {
                   className="group relative px-20 py-7 bg-[#2d3748] text-white rounded-full font-body font-bold text-sm tracking-widest overflow-hidden hover:scale-105 transition-all duration-700 shadow-3xl shadow-indigo-900/30"
                 >
                     <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-10 transition-opacity" />
-                    <span className="relative z-10">Create Account</span>
+                    <span className="relative z-10">Get Started</span>
                 </button>
 
                 <div className="flex flex-col items-center gap-3">

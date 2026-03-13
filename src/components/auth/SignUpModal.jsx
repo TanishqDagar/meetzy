@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import useUserStore from '../../store/userStore';
 import PrivacyField from '../ui/PrivacyField';
 
 const SignUpModal = ({ isOpen, onClose, onComplete }) => {
+  const navigate = useNavigate();
   const { login } = useUserStore();
   const [localState, setLocalState] = useState({
     realName: "", age: null, gender: "", email: "", password: ""
@@ -106,6 +108,16 @@ const SignUpModal = ({ isOpen, onClose, onComplete }) => {
               >
                 Continue
               </button>
+
+              <div className="text-center mt-6">
+                <button 
+                  type="button"
+                  onClick={() => navigate('/login')}
+                  className="font-body text-xs text-text-muted hover:text-text-main transition-colors"
+                >
+                  Already have an account? <span className="font-bold text-sage">Log in</span>
+                </button>
+              </div>
             </form>
           </div>
         </motion.div>
