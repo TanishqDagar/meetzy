@@ -1,10 +1,20 @@
+import { useEffect } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import ParticleField from '../components/three/ParticleField';
+import useUserStore from '../store/userStore';
 
 const Landing = () => {
   const navigate = useNavigate();
+  const { isAuthenticated, isOnboarded, logout } = useUserStore();
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      if (isOnboarded) navigate('/match');
+      else navigate('/onboarding');
+    }
+  }, [isAuthenticated, isOnboarded, navigate]);
 
   return (
     <div className="relative w-full h-screen overflow-hidden bg-bg-base font-body">
@@ -29,18 +39,29 @@ const Landing = () => {
           Meetzy
         </div>
         <div className="flex gap-8 items-center">
-          <button 
-            onClick={() => navigate('/login')}
-            className="text-[11px] font-bold uppercase tracking-[0.2em] text-text-muted hover:text-text-main transition-colors"
-          >
-            Sign In
-          </button>
-          <button 
-            onClick={() => navigate('/signup')}
-            className="px-6 py-3 bg-white/40 backdrop-blur-md border border-white/60 rounded-full text-[11px] font-bold uppercase tracking-[0.2em] text-[#2d3748] hover:bg-white/80 transition-all shadow-sm"
-          >
-            Sign Up
-          </button>
+          {!isAuthenticated ? (
+            <>
+              <button 
+                onClick={() => navigate('/login')}
+                className="text-[11px] font-bold uppercase tracking-[0.2em] text-text-muted hover:text-text-main transition-colors"
+              >
+                Sign In
+              </button>
+              <button 
+                onClick={() => navigate('/signup')}
+                className="px-6 py-3 bg-white/40 backdrop-blur-md border border-white/60 rounded-full text-[11px] font-bold uppercase tracking-[0.2em] text-[#2d3748] hover:bg-white/80 transition-all shadow-sm"
+              >
+                Sign Up
+              </button>
+            </>
+          ) : (
+            <button 
+              onClick={logout}
+              className="text-[11px] font-bold uppercase tracking-[0.2em] text-rose hover:text-red-500 transition-colors"
+            >
+              Sign Out
+            </button>
+          )}
         </div>
       </nav>
 
@@ -84,13 +105,22 @@ const Landing = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1 }}
         >
-          <button 
-            onClick={() => navigate('/signup')}
-            className="group relative px-16 py-6 bg-white text-[#2d3748] rounded-full font-body font-bold text-sm tracking-wide shadow-2xl shadow-indigo-100/40 hover:scale-105 transition-all duration-500 overflow-hidden"
-          >
-            <div className="absolute inset-0 bg-sage/5 opacity-0 group-hover:opacity-100 transition-opacity" />
-            <span className="relative z-10">Get Started</span>
-          </button>
+          {isAuthenticated ? (
+            <button 
+              onClick={() => navigate(isOnboarded ? '/match' : '/onboarding')}
+              className="group relative px-16 py-6 bg-[#2d3748] text-white rounded-full font-body font-bold text-sm tracking-wide shadow-2xl shadow-indigo-900/40 hover:scale-105 transition-all duration-500 overflow-hidden"
+            >
+              <span className="relative z-10">Continue Journey</span>
+            </button>
+          ) : (
+            <button 
+              onClick={() => navigate('/signup')}
+              className="group relative px-16 py-6 bg-white text-[#2d3748] rounded-full font-body font-bold text-sm tracking-wide shadow-2xl shadow-indigo-100/40 hover:scale-105 transition-all duration-500 overflow-hidden"
+            >
+              <div className="absolute inset-0 bg-sage/5 opacity-0 group-hover:opacity-100 transition-opacity" />
+              <span className="relative z-10">Get Started</span>
+            </button>
+          )}
         </motion.div>
       </main>
 

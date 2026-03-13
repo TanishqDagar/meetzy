@@ -10,6 +10,7 @@ const useUserStore = create(
       gender: "",
       email: "",
       password: "",
+      isAuthenticated: false,
 
       // Public — shown to matches
       anonymousId: "",
@@ -31,11 +32,29 @@ const useUserStore = create(
       addJournalEntry: (entry) => set((state) => ({
         journalEntries: [entry, ...state.journalEntries]
       })),
-      addMatch: (profile) => set((state) => ({ 
-        matches: state.matches.find(m => m.id === profile.id) 
-          ? state.matches 
-          : [...state.matches, profile] 
-      })),
+      addMatch: (profile) => set((state) => {
+        const exists = state.matches.find(m => m.id === (profile.id || profile.anonymousId));
+        return { 
+          matches: exists ? state.matches : [...state.matches, profile] 
+        };
+      }),
+      login: (data) => set({ ...data, isAuthenticated: true }),
+      logout: () => set({
+        realName: "",
+        age: null,
+        gender: "",
+        email: "",
+        password: "",
+        anonymousId: "",
+        traits: [],
+        supportPreference: "Mixed",
+        currentMood: "Calm",
+        note: "",
+        isOnboarded: false,
+        isAuthenticated: false,
+        matches: [],
+        journalEntries: []
+      }),
       reset: () => set({
         realName: "",
         age: null,
@@ -48,6 +67,7 @@ const useUserStore = create(
         currentMood: "Calm",
         note: "",
         isOnboarded: false,
+        isAuthenticated: false,
       }),
     }),
     {

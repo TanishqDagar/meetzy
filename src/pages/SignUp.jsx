@@ -8,14 +8,14 @@ import PrivacyField from '../components/ui/PrivacyField';
 
 const SignUp = () => {
   const navigate = useNavigate();
-  const { setPrivateInfo, realName, email, password, age, gender } = useUserStore();
+  const { login, realName, email, password, age, gender } = useUserStore();
   const [localState, setLocalState] = useState({
     realName, age, gender, email, password
   });
 
   const handleContinue = (e) => {
     e.preventDefault();
-    setPrivateInfo(localState);
+    login(localState);
     navigate('/onboarding');
   };
 
