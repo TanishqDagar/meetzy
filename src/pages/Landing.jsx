@@ -33,8 +33,58 @@ const FloatingAvatar = ({ delay = 0, x = 0, y = 0, color = "#9b8ec4" }) => (
 
 const Landing = () => {
   const navigate = useNavigate();
-  const { isAuthenticated, isOnboarded, logout } = useUserStore();
+  const { isAuthenticated, isOnboarded, logout, login } = useUserStore();
 
+  const handleGetStarted = async () => {
+    let alias = localStorage.getItem("userAlias");
+    let password = localStorage.getItem("userPassword");
+
+    if (alias && password) {
+      try {
+        const res = await fetch("/api/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ alias, password })
+        });
+        const data = await res.json();
+        if (data.success) {
+          login({ alias, password, realName: alias });
+          navigate("/match");
+        }
+      } catch (e) {
+        // Fallback for current no-backend UI environment
+        login({ alias, password, realName: alias });
+        navigate("/match");
+      }
+    } else {
+      const words = ["Quiet", "Calm", "Silent", "Blue", "Soft", "Gentle"];
+      const nouns = ["Mind", "Orbit", "Dawn", "Echo", "Wave", "Mist"];
+      const num = Math.floor(Math.random() * 90) + 10;
+      
+      alias = words[Math.floor(Math.random()*words.length)] + nouns[Math.floor(Math.random()*nouns.length)] + num;
+      password = Math.random().toString(36).slice(-8);
+      
+      localStorage.setItem("userAlias", alias);
+      localStorage.setItem("userPassword", password);
+
+      try {
+        const res = await fetch("/api/register", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ alias, password })
+        });
+        const data = await res.json();
+        if (data.success) {
+          login({ alias, password, realName: alias });
+          navigate("/match");
+        }
+      } catch (e) {
+        // Fallback for current no-backend UI environment
+        login({ alias, password, realName: alias });
+        navigate("/match");
+      }
+    }
+  };
 
   return (
     <div className="relative w-full h-screen overflow-hidden bg-bg-base font-body">
@@ -84,7 +134,7 @@ const Landing = () => {
         >
           {!isAuthenticated ? (
             <button 
-              onClick={() => navigate('/register')}
+              onClick={handleGetStarted}
               className="px-8 py-4 bg-white/40 backdrop-blur-md border border-white/60 rounded-full text-[11px] font-bold uppercase tracking-[0.3em] text-[#2d3748] hover:bg-white/80 transition-all shadow-lg"
             >
               Sign Up
@@ -140,7 +190,7 @@ const Landing = () => {
                className="flex flex-col items-center lg:items-start gap-10"
             >
                 <button 
-                  onClick={() => navigate('/register')}
+                  onClick={handleGetStarted}
                   className="group relative px-20 py-7 bg-[#2d3748] text-white rounded-full font-body font-bold text-sm tracking-widest overflow-hidden hover:scale-105 transition-all duration-700 shadow-3xl shadow-indigo-900/30"
                 >
                     <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-10 transition-opacity" />
