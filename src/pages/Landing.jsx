@@ -35,12 +35,6 @@ const Landing = () => {
   const navigate = useNavigate();
   const { isAuthenticated, isOnboarded, logout } = useUserStore();
 
-  useEffect(() => {
-    if (isAuthenticated) {
-      if (isOnboarded) navigate('/match');
-      else navigate('/onboarding');
-    }
-  }, [isAuthenticated, isOnboarded, navigate]);
 
   return (
     <div className="relative w-full h-screen overflow-hidden bg-bg-base font-body">
